@@ -132,22 +132,24 @@
                                         if (button_b.changes.pressed && button_b.pressed) {
                                             console.log('B button pressed!');
 
-                                            let tmpRay = new BABYLON.Ray();
-                                            tmpRay.origin = new BABYLON.Vector3();
-                                            tmpRay.direction = new BABYLON.Vector3();
+                                            //let tmpRay = new BABYLON.Ray();
+                                            let tmpRay = new Ray(inputSource.pointer.absolutePosition, inputSource.pointer.forward, 1.0);
+                                            //tmpRay.origin = new BABYLON.Vector3();
+                                            //tmpRay.direction = new BABYLON.Vector3();
 
                                             controller.getWorldPointerRayToRef(tmpRay);
                                             tmpRay.direction.scaleInPlace(1);
 
                                             let cube = new BABYLON.MeshBuilder.CreateBox("box", {size: 0.2}, scene);
                                             cube.position = tmpRay.origin + tmpRay.direction;
+                                            gui.position = tmpRay.origin + tmpRay.direction;
 
                                             /*
                                             can possibly replace 131 with this: 
 
                                             cube.position.copyFrom(tmpRay.origin);
                                             cube.position.addInPlace(tmpRay.direction);
-                                            /*
+                                            
                                             //motion_controller
 
                                             let tmpRay = new BABYLON.Ray();
@@ -180,6 +182,45 @@
                                         }
                                     });
                                 }    
+                            }
+                        }
+                        if (motion_controller.handness === 'right'){
+                            buttons = motion_controller.getAllComponentsOfType('button');
+                            if (buttons.length) {
+                                button_x = null;
+                                for (let i = 0; i < buttons.length; i++) {
+                                    if (buttons[i].id === 'x-button') {
+                                        button_x = buttons[i];
+                                    }
+                                }
+                                if (button_x !== null) {
+                                    button_x.onButtonStateChangedObservable.add(() => {
+                                        if (button_x.changes.pressed && button_x.pressed) {
+                                            console.log('X button pressed!');
+
+                                            if (gui.isVisible){
+                                                //if already visible, then hide
+                                                gui.isVisible = false;
+                                            } else {
+                                                //reappear if invisible
+                                                gui.isVisible = true;
+                                                //move gui too
+                                                //gui.position = tmpRay.origin + tmpRay.direction;
+                                            }
+                                            //runTests();
+
+                                            /*
+                                            if (gui.isVisible){
+                                                //if already visible, then hide
+                                                gui.isVisible = false;
+                                            } else {
+                                                //reappear if invisible
+                                                gui.isVisible = true;
+                                            }
+                                            //runTests(); */
+                                        }
+                                    });
+                                }   
                             }
                         }
                     });
