@@ -131,7 +131,16 @@
                                     button_b.onButtonStateChangedObservable.add(() => {
                                         if (button_b.changes.pressed && button_b.pressed) {
                                             console.log('B button pressed!');
+                                            let tmpRay = new BABYLON.Ray();
+                                            tmpRay.origin = controller.origin;
+                                            let directionRay = controller.getWorldPointerRayToRef();
+                                            tmpRay.direction = directionRay.direction;
+                                            gui.position = tmpRay.origin + tmpRay.direction;
 
+                                            let cube = new BABYLON.MeshBuilder.CreateBox("box", {size: 0.2}, scene);
+                                            cube.position = tmpRay.origin + tmpRay.direction;
+
+                                            /*
                                             //let tmpRay = new BABYLON.Ray();
                                             let tmpRay = new Ray(button_b.pointer.absolutePosition, button_b.pointer.forward, 1.0);
                                             //tmpRay.origin = new BABYLON.Vector3();
@@ -143,7 +152,7 @@
                                             let cube = new BABYLON.MeshBuilder.CreateBox("box", {size: 0.2}, scene);
                                             cube.position = tmpRay.origin + tmpRay.direction;
                                             gui.position = tmpRay.origin + tmpRay.direction;
-
+                                            */
                                             /*
                                             can possibly replace 131 with this: 
 
@@ -167,7 +176,7 @@
 
                                             cube.position.copyFrom(tmpRay.origin);
                                             cube.position.addInPlace(tmpRay.direction);
-                                            */
+                                            
 
                                             if (gui.isVisible){
                                                 //if already visible, then hide
@@ -178,7 +187,7 @@
                                                 //move gui too
                                                 //gui.position = tmpRay.origin + tmpRay.direction;
                                             }
-                                            //runTests();
+                                            //runTests(); */
                                         }
                                     });
                                 }    
