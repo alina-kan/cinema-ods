@@ -83,31 +83,7 @@
             .then((xr_helper) => {
                 xr_control = xr_helper;
                 xr_control.teleportation.detach();
-                
-                let point = new BABYLON.Vector3();
-
-                scene.onPointerObservable.add((pointerInfo) => {
-                    switch (pointerInfo.type) {
-                        case BABYLON.PointerEventTypes.POINTERMOVE:
-                            console.log("POINTER MOVE");
-                            break;
-                        case BABYLON.PointerEventTypes.POINTERWHEEL:
-                            console.log("POINTER WHEEL");
-                            break;
-                        case BABYLON.PointerEventTypes.POINTERPICK:
-                            console.log("POINTER PICK");
-                            break;
-                        case BABYLON.PointerEventTypes.POINTERTAP:
-                            console.log("POINTER TAP");
-                            
-                            break;
-                        case BABYLON.PointerEventTypes.POINTERDOUBLETAP:
-                            console.log("POINTER DOUBLE-TAP");
-                            break;
-                    }
-                });
-
-                
+  
                 xr_control.input.onControllerAddedObservable.add((controller) => {
                     controller.onMotionControllerInitObservable.add((motion_controller) => {
                         if (motion_controller.handness === 'right') {
@@ -269,6 +245,27 @@
             gui = null;
             gui_elements = {};
             play_button = null;
+
+            scene.onPointerObservable.add((pointerInfo) => {
+                    switch (pointerInfo.type) {
+                        case BABYLON.PointerEventTypes.POINTERMOVE:
+                            console.log("POINTER MOVE");
+                            break;
+                        case BABYLON.PointerEventTypes.POINTERWHEEL:
+                            console.log("POINTER WHEEL");
+                            break;
+                        case BABYLON.PointerEventTypes.POINTERPICK:
+                            console.log("POINTER PICK");
+                            break;
+                        case BABYLON.PointerEventTypes.POINTERTAP:
+                            console.log("POINTER TAP");
+                            
+                            break;
+                        case BABYLON.PointerEventTypes.POINTERDOUBLETAP:
+                            console.log("POINTER DOUBLE-TAP");
+                            break;
+                    }
+                });
         }
         
         function selectCinemaDatabase() {
