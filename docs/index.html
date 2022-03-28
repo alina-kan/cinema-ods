@@ -84,6 +84,68 @@
                 xr_control = xr_helper;
                 xr_control.teleportation.detach();
                 
+                var startingPoint;
+                var currentMesh;
+
+                var getGroundPosition = function () {
+                    var pickinfo = scene.pick(scene.pointerX, scene.pointerY, function (mesh) { return mesh == ground; });
+                    if (pickinfo.hit) {
+                        return pickinfo.pickedPoint;
+                    }
+
+                    return null;
+                }
+
+                var pointerDown = function (mesh) {
+                        currentMesh = mesh;
+                        startingPoint = getGroundPosition();
+                        if (startingPoint) { // we need to disconnect camera from canvas
+                            setTimeout(function () {
+                                camera.detachControl(canvas);
+                            }, 0);
+                        }
+                }
+
+                var pointerUp = function () {
+                    if (startingPoint) {
+                        camera.attachControl(canvas, true);
+                        startingPoint = null;
+                        return;
+                    }
+                }
+
+                var pointerMove = function () {
+                    if (!startingPoint) {
+                        return;
+                    }
+                    var current = getGroundPosition();
+                    if (!current) {
+                        return;
+                    }
+
+                    var diff = current.subtract(startingPoint);
+                    currentMesh.position.addInPlace(diff);
+
+                    startingPoint = current;
+
+                }
+
+                scene.onPointerObservable.add((pointerInfo) => {      		
+                    switch (pointerInfo.type) {
+                        case BABYLON.PointerEventTypes.POINTERDOWN:
+                            if(pointerInfo.pickInfo.hit && pointerInfo.pickInfo.pickedMesh == gui) {
+                                pointerDown(pointerInfo.pickInfo.pickedMesh)
+                            }
+                            break;
+                        case BABYLON.PointerEventTypes.POINTERUP:
+                                pointerUp();
+                            break;
+                        case BABYLON.PointerEventTypes.POINTERMOVE:          
+                                pointerMove();
+                            break;
+                    }
+                });
+
                 xr_control.input.onControllerAddedObservable.add((controller) => {
                     controller.onMotionControllerInitObservable.add((motion_controller) => {
                         if (motion_controller.handness === 'right') {
@@ -131,14 +193,8 @@
                                     button_b.onButtonStateChangedObservable.add(() => {
                                         if (button_b.changes.pressed && button_b.pressed) {
                                             console.log('B button pressed!');
-                                            let tmpRay = new BABYLON.Ray();
-                                            tmpRay.origin = controller.origin;
-                                            let directionRay = controller.getWorldPointerRayToRef();
-                                            tmpRay.direction = directionRay.direction;
-                                            gui.position = tmpRay.origin + tmpRay.direction;
-
-                                            let cube = new BABYLON.MeshBuilder.CreateBox("box", {size: 0.2}, scene);
-                                            cube.position = tmpRay.origin + tmpRay.direction;
+                                            let ray = new BABYLON.Ray();
+                                            ray.origin = controller.origin;
 
                                             /*
                                             //let tmpRay = new BABYLON.Ray();
