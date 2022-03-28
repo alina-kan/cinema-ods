@@ -84,68 +84,30 @@
                 xr_control = xr_helper;
                 xr_control.teleportation.detach();
                 
-                var startingPoint;
-                var currentMesh;
+                let point = new BABYLON.Vector3();
 
-                var getGroundPosition = function () {
-                    var pickinfo = scene.pick(scene.pointerX, scene.pointerY, function (mesh) { return mesh == ground; });
-                    if (pickinfo.hit) {
-                        return pickinfo.pickedPoint;
-                    }
-
-                    return null;
-                }
-
-                var pointerDown = function (mesh) {
-                        currentMesh = mesh;
-                        startingPoint = getGroundPosition();
-                        if (startingPoint) { // we need to disconnect camera from canvas
-                            setTimeout(function () {
-                                camera.detachControl(canvas);
-                            }, 0);
-                        }
-                }
-
-                var pointerUp = function () {
-                    if (startingPoint) {
-                        camera.attachControl(canvas, true);
-                        startingPoint = null;
-                        return;
-                    }
-                }
-
-                var pointerMove = function () {
-                    if (!startingPoint) {
-                        return;
-                    }
-                    var current = getGroundPosition();
-                    if (!current) {
-                        return;
-                    }
-
-                    var diff = current.subtract(startingPoint);
-                    currentMesh.position.addInPlace(diff);
-
-                    startingPoint = current;
-
-                }
-
-                scene.onPointerObservable.add((pointerInfo) => {      		
+                scene.onPointerObservable.add((pointerInfo) => {
                     switch (pointerInfo.type) {
-                        case BABYLON.PointerEventTypes.POINTERDOWN:
-                            if(pointerInfo.pickInfo.hit && pointerInfo.pickInfo.pickedMesh == gui) {
-                                pointerDown(pointerInfo.pickInfo.pickedMesh)
-                            }
+                        case BABYLON.PointerEventTypes.POINTERMOVE:
+                            console.log("POINTER MOVE");
                             break;
-                        case BABYLON.PointerEventTypes.POINTERUP:
-                                pointerUp();
+                        case BABYLON.PointerEventTypes.POINTERWHEEL:
+                            console.log("POINTER WHEEL");
                             break;
-                        case BABYLON.PointerEventTypes.POINTERMOVE:          
-                                pointerMove();
+                        case BABYLON.PointerEventTypes.POINTERPICK:
+                            console.log("POINTER PICK");
+                            break;
+                        case BABYLON.PointerEventTypes.POINTERTAP:
+                            console.log("POINTER TAP");
+                            
+                            break;
+                        case BABYLON.PointerEventTypes.POINTERDOUBLETAP:
+                            console.log("POINTER DOUBLE-TAP");
                             break;
                     }
                 });
 
+                
                 xr_control.input.onControllerAddedObservable.add((controller) => {
                     controller.onMotionControllerInitObservable.add((motion_controller) => {
                         if (motion_controller.handness === 'right') {
@@ -193,8 +155,11 @@
                                     button_b.onButtonStateChangedObservable.add(() => {
                                         if (button_b.changes.pressed && button_b.pressed) {
                                             console.log('B button pressed!');
+                                            /*
                                             let ray = new BABYLON.Ray();
-                                            ray.origin = controller.origin;
+                                            ray.origin = controller.origin; */
+                                            let sphere = BABYLON.MeshBuilder.CreateSphere("sphere1", {subdivisions: 16, diameter: 2}, scene);
+                                            sphere.position = (1,1,1);
 
                                             /*
                                             //let tmpRay = new BABYLON.Ray();
@@ -247,34 +212,6 @@
                                         }
                                     });
                                 }    
-                            }
-                        }
-                        if (motion_controller.handness === 'left'){
-                            buttons = motion_controller.getAllComponentsOfType('button');
-                            if (buttons.length) {
-                                button_x = null;
-                                for (let i = 0; i < buttons.length; i++) {
-                                    if (buttons[i].id === 'x-button') {
-                                        button_x = buttons[i];
-                                    }
-                                }
-                                if (button_x !== null) {
-                                    button_x.onButtonStateChangedObservable.add(() => {
-                                        if (button_x.changes.pressed && button_x.pressed) {
-                                            console.log('X button pressed!');
-
-                                            if (gui.isVisible){
-                                                //if already visible, then hide
-                                                gui.isVisible = false;
-                                            } else {
-                                                //reappear if invisible
-                                                gui.isVisible = true;
-                                                //move gui too
-                                                //gui.position = tmpRay.origin + tmpRay.direction;
-                                            }
-                                        }
-                                    });
-                                }   
                             }
                         }
                     });
