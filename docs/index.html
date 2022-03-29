@@ -258,6 +258,8 @@
                             break;
                         case BABYLON.PointerEventTypes.POINTERPICK:
                             console.log("POINTER PICK");
+                            let pickResult = scene.pick(scene.pointerX, scene.pointerY);
+                            console.log(pickResult);
                             break;
                         case BABYLON.PointerEventTypes.POINTERTAP:
                             console.log("POINTER TAP"); 
