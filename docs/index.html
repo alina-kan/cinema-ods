@@ -246,6 +246,8 @@
             gui_elements = {};
             play_button = null;
 
+            let vector = { x:'', y:'', z:'' };
+
             scene.onPointerObservable.add((pointerInfo) => {
                     switch (pointerInfo.type) {
                         case BABYLON.PointerEventTypes.POINTERMOVE:
@@ -256,6 +258,8 @@
                             break;
                         case BABYLON.PointerEventTypes.POINTERPICK:
                             console.log("POINTER PICK");
+                            vector = pickResult.pickedPoint;
+                            console.log('left mouse click: ' + vector.x + ',' + vector.y + ',' + vector.z );
                             break;
                         case BABYLON.PointerEventTypes.POINTERTAP:
                             console.log("POINTER TAP"); 
