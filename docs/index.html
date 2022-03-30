@@ -264,7 +264,7 @@
                             vector.y = pickResult.pickedPoint.y;
                             vector.z = pickResult.pickedPoint.z;
                             console.log(vector);
-                            gui.position = vector;
+                            gui.position.add(vector);
                             break;
                         case BABYLON.PointerEventTypes.POINTERTAP:
                             console.log("POINTER TAP"); 
