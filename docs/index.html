@@ -113,16 +113,6 @@
                                                 //gui.position = tmpRay.origin + tmpRay.direction;
                                             }
                                             //runTests();
-
-                                            /*
-                                            if (gui.isVisible){
-                                                //if already visible, then hide
-                                                gui.isVisible = false;
-                                            } else {
-                                                //reappear if invisible
-                                                gui.isVisible = true;
-                                            }
-                                            //runTests(); */
                                         }
                                     });
                                 }
@@ -131,13 +121,8 @@
                                     button_b.onButtonStateChangedObservable.add(() => {
                                         if (button_b.changes.pressed && button_b.pressed) {
                                             console.log('B button pressed!');
-                                            /*
-                                            let ray = new BABYLON.Ray();
-                                            ray.origin = controller.origin; 
-                                            let sphere = BABYLON.MeshBuilder.CreateSphere("sphere1", {subdivisions: 16, diameter: 2}, scene);
-                                            sphere.position = new BABYLON.Vector3(1,1,1);
-                                            */
-                                            
+                                            //move the gui to where the controller is pointing
+
                                             let tmpRay = new BABYLON.Ray();
                                             //let tmpRay = new Ray(button_b.pointer.absolutePosition, button_b.pointer.forward, 1.0);
                                             tmpRay.origin = new BABYLON.Vector3();
@@ -149,42 +134,12 @@
                                             //let cube = new BABYLON.MeshBuilder.CreateBox("box", {size: 0.2}, scene);
                                             //cube.position = tmpRay.origin.add(tmpRay.direction);
                                             gui.position = tmpRay.origin.add(tmpRay.direction);
-                                            //gui.position = tmpRay.origin + tmpRay.direction;
                                             
                                             /*
                                             can possibly replace 131 with this: 
 
                                             cube.position.copyFrom(tmpRay.origin);
                                             cube.position.addInPlace(tmpRay.direction);
-                                            
-                                            //motion_controller
-
-                                            let tmpRay = new BABYLON.Ray();
-                                            tmpRay.origin = new BABYLON.Vector3();
-                                            tmpRay.direction = new BABYLON.Vector3();
-
-                                            controller.getWorldPointerRayToRef(tmpRay);
-                                            tmpRay.direction.scaleInPlace(1);
-
-                                            let cube = new BABYLON.MeshBuilder.CreateBox("box", {size: 0.2}, scene);
-                                            cube.position = tmpRay.origin + tmpRay.direction;
-
-                                            /*
-                                            can possibly replace 131 with this: 
-
-                                            cube.position.copyFrom(tmpRay.origin);
-                                            cube.position.addInPlace(tmpRay.direction);
-                                            
-
-                                            if (gui.isVisible){
-                                                //if already visible, then hide
-                                                gui.isVisible = false;
-                                            } else {
-                                                //reappear if invisible
-                                                gui.isVisible = true;
-                                                //move gui too
-                                                //gui.position = tmpRay.origin + tmpRay.direction;
-                                            }
                                             //runTests(); */
                                         }
                                     });
@@ -193,41 +148,6 @@
                         }
                     });
                 });
-
-                /*
-
-                                const ray = /*inputSource ? tmpRay :* /controller.pickInfo.ray;
-                                ray.direction.scaleInPlace(0.2);
-
-                                if (right_trigger !== null) {
-                                    right_trigger.onButtonStateChangedObservable.add(() => {
-                                        if (right_trigger.changes.pressed && right_trigger.pressed) {
-                                            console.log('trigger pressed!');
-                                            //runTests();
-                                        }
-                                    });
-                                }
-                                /*
-                scene.onPointerObservable.add((event) => {
-                    if (event.type === BABYLON.PointerEventTypes.POINTERPICK) {
-
-                        controller.onMotionControllerInitObservable.add((motion_controller)
-
-                        const inputSource = xr.pointerSelection.getXRControllerByPointerId(event.event.pointerId);
-                        if (!inputSource || (inputSource && inputSource.motionController.handness === 'right')) {
-                            if (inputSource) {
-                                inputSource.getWorldPointerRayToRef(tmpRay);
-                            }
-                            const ray = /*inputSource ? tmpRay :* /event.pickInfo.ray; /*
-                            ray.direction.scaleInPlace(0.2);
-                            bullet.position.copyFrom(ray.origin);
-                            bullet.position.addInPlace(ray.direction);
-                            bullet.physicsImpostor = new BABYLON.PhysicsImpostor(bullet, BABYLON.PhysicsImpostor.SphereImpostor, { mass: 3 });
-                            bullet.physicsImpostor.setLinearVelocity(ray.direction.scale(400));
-                        }
-                    }
-                })  */
-                //xr_control.input 
 
                 startRenderLoop(engine);
             })
