@@ -146,8 +146,9 @@
                                             controller.getWorldPointerRayToRef(tmpRay);
                                             tmpRay.direction.scaleInPlace(1.23);
 
-                                            let cube = new BABYLON.MeshBuilder.CreateBox("box", {size: 0.2}, scene);
-                                            cube.position = tmpRay.origin.add(tmpRay.direction);
+                                            //let cube = new BABYLON.MeshBuilder.CreateBox("box", {size: 0.2}, scene);
+                                            c//ube.position = tmpRay.origin.add(tmpRay.direction);
+                                            gui.position = tmpRay.origin.add(tmpRay.direction);
                                             //gui.position = tmpRay.origin + tmpRay.direction;
                                             
                                             /*
