@@ -45,6 +45,9 @@
             camera.inputs.attached.mousewheel.detachControl(canvas);
             camera.znear = 0.1;
             camera.zfar = 1000.0;
+
+            let cube = new BABYLON.MeshBuilder.CreateBox("box", {size: 0.2}, scene);
+            cube.isVisible = false;
             
             // add photo dome (equirectangular panorama)
             let i;
@@ -144,6 +147,38 @@
                                         }
                                     });
                                 }    
+                            }
+                        } 
+                        if (motion_controller.handness === 'right') {
+                            buttons = motion_controller.getAllComponentsOfType('button');
+                            if (buttons.length) {
+                                button_x = null;
+                                for (let i = 0; i < buttons.length; i++) {
+                                    if (buttons[i].id === 'x-button') {
+                                        button_x = buttons[i];
+                                    }
+                                }
+                                if (button_x !== null){
+                                    button_x.onButtonStateChangedObservable.add(() => {
+                                        if (button_x.changes.pressed && button_x.pressed) {
+                                            console.log('B button pressed!');
+                                            //move the gui to where the controller is pointing
+
+                                            let tmpRay = new BABYLON.Ray();
+                                            //let tmpRay = new Ray(button_b.pointer.absolutePosition, button_b.pointer.forward, 1.0);
+                                            tmpRay.origin = new BABYLON.Vector3();
+                                            tmpRay.direction = new BABYLON.Vector3();
+
+                                            controller.getWorldPointerRayToRef(tmpRay);
+                                            tmpRay.direction.scaleInPlace(1.23);
+
+                                            cube.position = tmpRay.origin.add(tmpRay.direction);
+                                            cube.isVisible = true;
+                                            //gui.position = tmpRay.origin.add(tmpRay.direction);
+                                        }
+                                        //cube.isVisible = false;
+                                    });
+                                } 
                             }
                         }
                     });
