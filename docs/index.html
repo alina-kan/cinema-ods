@@ -170,13 +170,14 @@
                                             controller.getWorldPointerRayToRef(tmpRay);
                                             tmpRay.direction.scaleInPlace(1.23);
 
+                                            let cube = new BABYLON.MeshBuilder.CreateBox("box", {size: 0.2}, scene);
                                             cube.position = tmpRay.origin.add(tmpRay.direction);
                                             cube.isVisible = true;
                                             //gui.position = tmpRay.origin.add(tmpRay.direction);
                                         }
-                                        //cube.isVisible = false;
                                     });
                                 } 
+                                cube.isVisible = false;
                             }
                         }
                     });
