@@ -53,6 +53,40 @@ class CinemaOdsReader {
                     }
                     let header = lines[0].split(',');
                     for (i = 0; i < header.length; i++) {
+                        /*
+                        let property = {};
+                        //parse column names
+                        property.name = header[i];
+                    }
+                    //read lines 1-N, split into columns,
+                    // but leave them as strings
+                    for (let i = 1; i < lines.length; i++){
+                        let col_split = lines[i].split(',');
+                        let property_col = [];
+                        for (let j = 0; j < col_split.length; j++){
+                            //property_col[j] = col_split[j];
+                            property.name[j] = col_split[j];
+                        }
+                    }
+
+                    for (let i = 0; i < property.name.length; i++){
+                        if (property.name[i].every(this.isFieldBoolean)){
+                            //checkbox
+                            property.name[i].type = "CHECK";
+                        } else if (property.name[i].every(this.isFieldInt)){
+                            //slider
+                            property.name[i].type = "RANGE";
+                        } else {
+                            //radio buttons
+                            property.name[i].type = "RADIO";
+                            let values = {};
+                            for (let j = 0; j < property.name; i++){
+
+                            }
+                        }
+                    } */
+
+                    
                         let property = {};
                         let type_start = header[i].indexOf('[');
                         if (type_start >= 0) {
@@ -85,7 +119,7 @@ class CinemaOdsReader {
                             return;
                         }
                         this.fields.push(property);
-                    }
+                    } 
                     for (i = 1; i < lines.length; i++) {
                         let row = lines[i];
                         if (row[row.length - 1] === '\r') {
@@ -124,5 +158,34 @@ class CinemaOdsReader {
             xhr.open('GET', this.cdb_url + '/data.csv', true);
             xhr.send();
         });
+    }
+
+    isFieldBoolean(data_array, field_name){
+        let is_field_bool = data_array.every((element) => {
+            if (element[field_name] === "True" || element[field_name] === "False" 
+            || element[field_name] === "true" || element[field_name] === "false"
+            || element[field_name] === "0" || element[field_name] === "1") {
+                return true;
+            }
+            return false;
+        });
+        return is_field_bool;
+    }
+
+    isFieldInt(data_array, field_name){
+        let is_field_int = data_array.every((element) => {
+            //isNAN => is this element not a number?
+            // want isNan to be false since that would mean that the string is an int,
+            // then convert into an actual int
+            if (!isNaN(element[field_name]) && Number.isInteger(parseFloat(element[field_name]))) {
+                return true;
+            }
+            return false;
+        });
+        return is_field_int;
+    }
+
+    columnCreator(){
+
     }
 }
