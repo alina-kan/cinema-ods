@@ -83,8 +83,8 @@ class CinemaOdsReader {
                             for (let j = 0; j < property.name; i++){
 
                             }
-                        }
-                    } */
+                        } */
+                     
 
                     
                         let property = {};
