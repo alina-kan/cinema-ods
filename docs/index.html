@@ -181,10 +181,7 @@
 
                                             let cube = new BABYLON.MeshBuilder.CreateBox("box", {size: 0.2}, scene);
                                             cube.position = tmpRay.origin.add(tmpRay.direction);
-                                            cube.isVisible = false;
-                                            while (button_x.pressed){
-                                                cube.isVisible = true;
-                                            }
+                                            cube.isVisible = true;
                                             //gui.position = tmpRay.origin.add(tmpRay.direction);
                                         }
                                     });
